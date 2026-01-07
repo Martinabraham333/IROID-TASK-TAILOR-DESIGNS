@@ -6,6 +6,7 @@ import 'package:tailor_design_app/presentation/widgets/all_time_section_widget.d
 import 'package:tailor_design_app/presentation/widgets/category_section_widget.dart';
 import 'package:tailor_design_app/presentation/widgets/most_popular_section_widget.dart';
 import 'package:tailor_design_app/presentation/widgets/top_profile_section_widget.dart';
+import 'package:tailor_design_app/presentation/widgets/top_sailed2_section_widget.dart';
 import 'package:tailor_design_app/presentation/widgets/top_saled_section_widget.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -78,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                          SizedBox(height: 20),
 
-                         
+                         TopSailed2SectionWidget(homeData: state.homeData!),
                       ],
                     ),
                   ),
