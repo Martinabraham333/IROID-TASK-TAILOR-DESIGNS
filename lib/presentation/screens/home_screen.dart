@@ -80,6 +80,11 @@ class _HomeScreenState extends State<HomeScreen> {
                          SizedBox(height: 20),
 
                          TopSailed2SectionWidget(homeData: state.homeData!),
+                          SizedBox(height: 20),
+                        Image.network(
+                          state.homeData!.friendlyFloral.banner.image,
+                          fit: BoxFit.cover,
+                        ),
                       ],
                     ),
                   ),
