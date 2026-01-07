@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tailor_design_app/core/widgets/custom_text.dart';
 import 'package:tailor_design_app/presentation/bloc/fashion_bloc.dart';
-import 'package:tailor_design_app/presentation/widgets/buttons.dart';
+import 'package:tailor_design_app/presentation/widgets/all_time_section_widget.dart';
+import 'package:tailor_design_app/presentation/widgets/category_section_widget.dart';
+import 'package:tailor_design_app/presentation/widgets/most_popular_section_widget.dart';
+import 'package:tailor_design_app/presentation/widgets/top_profile_section_widget.dart';
+import 'package:tailor_design_app/presentation/widgets/top_saled_section_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,90 +26,64 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<FashionBloc, FashionState>(
       builder: (context, state) {
+        return state.isLoading == true
+            ? SafeArea(
+                child: Scaffold(
+                  body: Center(child: CircularProgressIndicator()),
+                ),
+              )
+            : state.homeData == null
+            ? SafeArea(
+                child: Scaffold(
+                  body: Center(child: CustomText(text: 'No data found')),
+                ),
+              )
+            : SafeArea(
+                child: Scaffold(
+                  body: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TopProfileSectionWidget(homeData: state.homeData!),
 
-        return  state.isLoading==true ? SafeArea(child: Scaffold(body: Center(child: CircularProgressIndicator(),),))
-        
-       : state.homeData ==null ? SafeArea(child: Scaffold(body: Center(child: CustomText(text: 'No data found'),),))
-       
-     :    SafeArea(
-          child: Scaffold(
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: 220,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 20,
+                            bottom: 20,
+                            left: 20,
+                          ),
+                          child: CustomText(
+                            text: state.homeData!.designsByArya.sectionTitle,
+                            fontSize: 25,
+                          ),
+                        ),
 
-                        colors: [Color.fromARGB(255, 85, 16, 94), Colors.black],
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 30),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircleAvatar(
-                                radius: 40,
-                                backgroundColor: Colors.white,
-                                backgroundImage: NetworkImage(
-                                  state.homeData!.tailorNearYou.profile.image ,
-                                ),
-                              ),
-                              SizedBox(width: 20),
-                              Buttons.followButton(),
-                              SizedBox(width: 20),
-                              Buttons.likeButton(),
-                              SizedBox(width: 20),
-                              Buttons.shareButton(),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CustomText(
-                                    text: state
-                                        .homeData!
-                                        .tailorNearYou
-                                        .profile
-                                        .name, color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20,
-                                  ),
-                                  CustomText(
-                                    text: state
-                                        .homeData!
-                                        .tailorNearYou
-                                        .profile
-                                        .designation, color: Colors.white,
-                                  ),
-                                ],
-                              ),
-                              CustomText(text: 'View More',color: Colors.white,fontWeight: FontWeight.bold,fontSize: 16)
-                            ],
-                          ),
-                        ],
-                      ),
+                        CategorySectionWidget(homeData: state.homeData!),
+                        SizedBox(height: 20),
+                        MostPopularSectionWidget(homeData: state.homeData!),
+                        SizedBox(height: 20),
+                        AllTimeSectionWidget(homeData: state.homeData!),
+                        SizedBox(height: 20),
+                        Image.network(
+                          state.homeData!.lehenga.banner.image,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(height: 20),
+                        TopSaledSectionWidget(homeData: state.homeData!),
+                        SizedBox(height: 20),
+                        Image.network(
+                          state.homeData!.breezyCotton.banner.image,
+                          fit: BoxFit.cover,
+                        ),
+
+                         SizedBox(height: 20),
+
+                         
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-        );
+                ),
+              );
       },
     );
   }
